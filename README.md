@@ -8,10 +8,9 @@ O objetivo foi implementar uma arquitetura IoT funcional, demonstrando a comunic
 
 ## 👥 Integrantes
 
-* [NOME COMPLETO DO INTEGRANTE 1 - RM XXXXX]
-* [NOME COMPLETO DO INTEGRANTE 2 - RM XXXXX]
-* [NOME COMPLETO DO INTEGRANTE 3 - RM XXXXX]
-* [NOME COMPLETO DO INTEGRANTE 4 - RM XXXXX]
+* Daniel Brito dos Santos Junior - RM 566236
+* Gustavo Palomares Borsato - RM 564621
+* Vitor Rampazzi Franco - RM 562270
 
 ---
 
