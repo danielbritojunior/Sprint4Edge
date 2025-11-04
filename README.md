@@ -1,4 +1,3 @@
-```markdown
 # ⚽ Projeto "Passa a Bola" - Sprint 4: Edge Computing
 
 Este repositório contém a Prova de Conceito (PoC) da Sprint 4 para a disciplina de "Edge Computing and Computer Systems", conforme os requisitos da Entrega 2.
@@ -47,18 +46,16 @@ O projeto implementa comunicação nos dois sentidos:
 Os "códigos-fonte finais" estão "organizados por pastas" da seguinte forma:
 
 ```
-
 /Sprint4Edge/
 ├── /hardware-dispositivo/
-│   └── placar\_esp32.ino     \# (Código-fonte final do ESP32)
+│   └── placar_esp32.ino     # (Código-fonte final do ESP32)
 │
 ├── /servidor-dashboard/
-│   ├── dashboard.py         \# (Código-fonte final do servidor Flask/SocketIO)
-│   └── requirements.txt     \# (Script de deploy das bibliotecas Python)
+│   ├── dashboard.py         # (Código-fonte final do servidor Flask/SocketIO)
+│   └── requirements.txt     # (Script de deploy das bibliotecas Python)
 │
-└── README.md                \# (Esta documentação)
-
-````
+└── README.md                # (Esta documentação)
+```
 
 ---
 
@@ -108,7 +105,7 @@ O Wokwi (esquerda) está conectado ao Broker. O Servidor Python (terminal) tamb�
 ### 2. PoC: Golo do Time A (Publicação HW -> Site)
 Simulámos um golo no sensor do Time A (esquerda). O placar no site (direita) atualizou **instantaneamente** para "1" com a animação "pop".
 
-`[COLOQUE AQUI O SEU PRINT DO PLACAR A MOSTRAR "1 vs 0"]`
+`[COLOJE AQUI O SEU PRINT DO PLACAR A MOSTRAR "1 vs 0"]`
 
 ### 3. PoC: Fim de Jogo (Comando Site -> HW)
 Clicámos em "Encerrar e Resetar" no site. O Modal de "Fim de Jogo" apareceu no navegador.
@@ -119,4 +116,3 @@ Clicámos em "Encerrar e Resetar" no site. O Modal de "Fim de Jogo" apareceu no 
 Após clicar em "Ok, Fechar" no Modal, o comando foi enviado ao ESP32, que mostrou o vencedor no LCD antes de zerar os contadores.
 
 `[COLOQUE AQUI UM PRINT DO LCD NO WOKWI A MOSTRAR "Time A Venceu!"]`
-````
