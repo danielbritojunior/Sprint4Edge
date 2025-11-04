@@ -180,3 +180,11 @@ Clicamos em "Encerrar e Resetar" no site. O Modal de "Fim de Jogo" (com o venced
 Após clicar em "Ok, Fechar", o comando foi enviado ao ESP32 (Wokwi), que mostrou o vencedor no seu próprio LCD antes de zerar os contadores.
 
 <img width="926" height="450" alt="image" src="https://github.com/user-attachments/assets/72cca058-59ef-46e2-a386-52a5aea5888f" />
+
+---
+
+## 🏁 Conclusão
+A Prova de Conceito do projeto "Passa a Bola" demonstrou com sucesso a integração entre hardware IoT, broker MQTT e dashboard web.
+O sistema foi capaz de detetar eventos físicos (gols) e atualizar o placar em tempo real no navegador, comprovando a comunicação bidirecional entre o ESP32 (Edge Device) e o servidor Flask (Dashboard).
+
+Além de consolidar os conceitos de Edge Computing, o projeto mostrou na prática como diferentes tecnologias — sensores, rede, protocolo MQTT e aplicações web — podem atuar juntas para criar uma solução interativa, escalável e totalmente replicável.
