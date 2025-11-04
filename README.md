@@ -152,7 +152,8 @@ Estes são os "prints de integração IoT com o site" que comprovam o funcioname
 ### 1. Sistema Conectado (Visão Geral)
 O Wokwi (esquerda) está conectado ao Broker. O Servidor Python (terminal) também está conectado. O Dashboard (navegador) mostra o placar inicial "0 vs 0".
 
-`[COLE AQUI O SEU PRINT DO SISTEMA LIGADO]`
+`<img width="1364" height="624" alt="image" src="https://github.com/user-attachments/assets/78fc7dc7-1e10-44c9-8636-6cd2a8346d56" />
+`
 
 ### 2. PoC: Golo do Time A (Publicação HW -> Site)
 Simulámos um golo no sensor do Time A (clicando no sensor esquerdo no Wokwi). O placar no site (direita) atualizou **instantaneamente** para "1" com a animação "pop".
