@@ -1,122 +1,190 @@
-```markdown
 # ⚽ Projeto "Passa a Bola" - Sprint 4: Edge Computing
 
-Este repositório contém a Prova de Conceito (PoC) da Sprint 4 para a disciplina de "Edge Computing and Computer Systems", conforme os requisitos da Entrega 2.
+## 1. Introdução
 
-O objetivo foi implementar uma arquitetura IoT funcional, demonstrando a comunicação em tempo real (publicação e subscrição) entre um dispositivo IoT (hardware simulado) e uma plataforma de visualização (dashboard web).
+Este repositório contém o projeto final da Sprint 4 para a disciplina de "Edge Computing and Computer Systems".
+
+O objetivo deste projeto é demonstrar uma **Prova de Conceito (PoC)** de uma arquitetura IoT funcional. Para isso, foi construído um **Placar de Futebol Inteligente** que opera em tempo real.
+
+Este sistema simula a deteção de gols para dois times usando sensores. Os dados são enviados (publicados) via MQTT para um broker na nuvem, e um dashboard web (site) recebe (subscreve) esses dados, atualizando um placar visual para o utilizador instantaneamente.
+
+Este repositório contém todos os "códigos-fonte finais" e "scripts de deploy" necessários para replicar o projeto.
 
 ---
 
 ## 👥 Integrantes
 
-* [NOME COMPLETO DO INTEGRANTE 1 - RM XXXXX]
-* [NOME COMPLETO DO INTEGRANTE 2 - RM XXXXX]
-* [NOME COMPLETO DO INTEGRANTE 3 - RM XXXXX]
-* [NOME COMPLETO DO INTEGRANTE 4 - RM XXXXX]
+* Daniel Brito dos Santos Junior - RM 566236
+* Gustavo Palomares Borsato - RM 564621
+* Vitor Rampazzi Franco - RM 562270
 
 ---
 
-## 📋 Detalhes da Implementação
+## 🛠️ Arquitetura e Componentes
 
-A arquitetura da solução é baseada em 3 componentes principais que comunicam via protocolo MQTT:
+A solução é dividida em três partes que comunicam entre si:
 
-1.  **Dispositivo IoT (Hardware Simulado):**
-    * **Plataforma:** Wokwi (Simulador de ESP32).
-    * **Hardware:** 1x ESP32, 2x Sensores Ultrassónicos HC-SR04 (um para cada time), 1x Display LCD 16x2 I2C e 1x Buzzer.
-    * **Função:** Deteta a passagem da "bola" (simulada pela alteração da distância no sensor), contabiliza os golos para o "Time A" ou "Time B", exibe o placar no LCD e toca uma melodia de "Olé, Olé" no buzzer.
+### 1. O Hardware (Dispositivo IoT)
 
-2.  **Broker MQTT (Plataforma de Gerenciamento):**
-    * **Endereço:** `54.221.163.3` (Broker FIWARE/IoT da disciplina).
-    * **Porta:** `1883`.
-    * **Função:** Atua como o intermediário que recebe as mensagens publicadas pelo ESP32 e as retransmite para todos os clientes subscritos (como o nosso dashboard).
+O dispositivo que deteta os gols foi simulado na plataforma Wokwi para garantir a replicabilidade. Ele é composto por:
 
-3.  **Dashboard (Servidor e Frontend):**
-    * **Tecnologia (Backend):** Um servidor web local escrito em Python, usando **Flask** (para servir a página) e **Flask-SocketIO** (para comunicação em tempo real com o navegador).
-    * **Tecnologia (Frontend):** A interface é construída com HTML, CSS e JavaScript (jQuery), apresentando um placar "dark mode" que se atualiza instantaneamente.
+* **1x Placa ESP32:** O "cérebro" do projeto, responsável por ler os sensores, controlar o LCD e (o mais importante) conectar-se ao Wi-Fi para enviar os dados.
+* **2x Sensores Ultrassónicos HC-SR04:** Usados para simular a passagem da bola pela linha do gol. Cada sensor representa o gol de um time. Quando a distância lida é curta (< 10cm), ele regista um "gol".
+* **1x Display LCD 16x2 I2C:** Mostra o placar localmente no hardware ("Time A: 0 | Time B: 0").
+* **1x Buzzer:** Emite um som temático ("Olé, Olé") a cada gol marcado, com tons diferentes para cada time.
 
-### Comunicação Bidirecional
+### 2. O Broker (Plataforma de Gerenciamento)
 
-O projeto implementa comunicação nos dois sentidos:
-* **HW -> Site (Publicação):** O ESP32 publica os golos nos tópicos `passa-a-bola/timeA/attrs` e `passa-a-bola/timeB/attrs`.
-* **Site -> HW (Subscrição):** O Dashboard (site) publica uma mensagem `{"comando": "resetar"}` no tópico `passa-a-bola/baliza01/cmd`. O ESP32 está subscrito a este tópico, e ao receber o comando, exibe o vencedor no LCD e zera a contagem.
+Atua como o "carteiro" ou intermediário na nuvem. O hardware e o site nunca se falam diretamente; eles falam através do broker.
+
+* **Plataforma:** Broker MQTT (FIWARE/IoT da disciplina)
+* **Endereço:** `54.221.163.3`
+* **Porta:** `1883`
+
+### 3. O Dashboard (Servidor e Site)
+
+Este é o site que o utilizador vê. É um servidor local escrito em Python que:
+1.  Liga-se ao Broker MQTT para "ouvir" os gols.
+2.  Usa **Flask** para criar uma página web.
+3.  Usa **Flask-SocketIO** para "empurrar" o novo placar para o navegador em tempo real (sem precisar de recarregar a página).
 
 ---
 
-## 🗂️ Estrutura do Repositório (Organização por Pastas)
+## 🗂️ Estrutura do Repositório
 
-Os "códigos-fonte finais" estão "organizados por pastas" da seguinte forma:
+Para garantir a "organização por pastas", os arquivos estão divididos da seguinte forma:
 
 ```
-
 /Sprint4Edge/
 ├── /hardware-dispositivo/
-│   └── placar\_esp32.ino     \# (Código-fonte final do ESP32)
+│   └── placar_esp32.ino     # (Código-fonte do ESP32 que vai no Wokwi)
 │
 ├── /servidor-dashboard/
-│   ├── dashboard.py         \# (Código-fonte final do servidor Flask/SocketIO)
-│   └── requirements.txt     \# (Script de deploy das bibliotecas Python)
+│   ├── dashboard_python.py       # (Código do nosso site/servidor Python)
+│   └── requirements.txt     # (O "script de deploy" com as bibliotecas Python)
 │
-└── README.md                \# (Esta documentação)
-
-````
+└── README.md                # (Esta documentação)
+```
 
 ---
 
-## 🚀 Como Replicar o Projeto (Garantia de Replicabilidade)
+## 🚀 Como Executar o Projeto
 
-Para garantir a "garantia de replicabilidade do projeto" e testar a Prova de Conceito (PoC), siga os 3 passos abaixo.
+Esta secção é a "garantia de replicabilidade". Siga estes passos para testar o projeto completo no seu computador.
 
-### Passo 1: Iniciar o Hardware (Simulado)
+### Pré-requisitos
 
-1.  Aceda ao link do nosso projeto no Wokwi.
-2.  Clique no botão verde "Play" (Iniciar Simulação).
-3.  Aguarde o monitor série (em baixo) mostrar "WiFi Conectado!" e "Conectado ao Broker MQTT".
+Antes de começar, garanta que tem duas ferramentas instaladas no seu computador:
+1.  **Git** (para copiar o repositório).
+2.  **Python** (versão 3.7 ou superior).
 
-* **Link do Wokwi:** `[COLOQUE AQUI O SEU LINK PÚBLICO DO WOKWI]`
-* (O código-fonte desta simulação também está disponível na pasta `/hardware-dispositivo/placar_esp32.ino`).
+### Passo 1: Clonar (Copiar) o Repositório
 
-### Passo 2: Iniciar o Servidor do Dashboard (Local)
+Abra o seu Terminal (ou `cmd`) e use o `git clone` para copiar os arquivos para o seu computador.
 
-1.  Clone este repositório ou faça o download dos ficheiros.
-2.  Abra um terminal e navegue até à pasta `/servidor-dashboard/`.
-3.  Instale as bibliotecas Python usando o nosso "script de deploy" (`requirements.txt`):
+```bash
+git clone [https://github.com/danielbritojunior/Sprint4Edge.git](https://github.com/danielbritojunior/Sprint4Edge.git)
+```
+Depois, entre na pasta que acabou de ser criada:
+```bash
+cd Sprint4Edge
+```
+
+### Passo 2: Iniciar o Hardware
+
+Você tem duas opções para iniciar o hardware. Para a entrega online, use a Opção A. Para uma apresentação presencial, use a Opção B.
+
+#### Opção A: Simulado (Wokwi - Recomendado para Teste Rápido)
+
+1.  Abra o seu navegador de Internet.
+2.  Aceda ao nosso link público de simulação no Wokwi:
+    * **Link:** https://wokwi.com/projects/446647076897545217
+3.  Clique no botão verde "►" (Play) para iniciar a simulação.
+4.  No Wokwi, na aba "Serial Monitor" (embaixo), aguarde até ver as mensagens:
+    * `WiFi Conectado!`
+    * `Conectado ao Broker MQTT... Conectado!`
+
+O seu hardware está agora online e pronto para enviar gols.
+
+#### Opção B: Método Local (Presencial com Placa Real)
+
+Isto é para quando você for montar o projeto fisicamente.
+
+1.  **Monte o Circuito:** Conecte os componentes físicos (LCD, 2x Sensores, Buzzer) nos pinos do ESP32 conforme definido no código (`placar_esp32.ino`).
+2.  **Abra o Código:** Abra o arquivo `/hardware-dispositivo/placar_esp32.ino` na sua Arduino IDE.
+3.  **Instale as Bibliotecas:** No Arduino IDE, vá a `Ferramentas > Gerir Bibliotecas...` e instale:
+    * `PubSubClient`
+    * `ArduinoJson`
+    * `LiquidCrystal_I2C`
+4.  **Altere o Wi-Fi:** Mude as linhas 10 e 11 do código para o Wi-Fi do local (ex: o hotspot do seu telemóvel):
+    ```cpp
+    const char* SSID = "Nome_do_WiFi_do_seu_Telemovel";
+    const char* PASSWORD = "Senha_do_seu_WiFi";
+    ```
+5.  **Carregue o Código:** Clique em "Carregar" (Upload) no Arduino IDE para enviar o código para a sua placa ESP32.
+
+### Passo 3: Iniciar o Servidor do Dashboard (o seu PC)
+
+(Este passo é o mesmo, quer o hardware seja real ou simulado)
+
+1.  **Volte ao seu Terminal** (que já está dentro da pasta `Sprint4Edge`).
+2.  Navegue para a pasta do servidor:
+    ```bash
+    cd servidor-dashboard
+    ```
+3.  **Instale as bibliotecas:** Use o nosso "script de deploy" (`requirements.txt`) para instalar tudo o que o Python precisa:
     ```bash
     pip install -r requirements.txt
     ```
-4.  Execute o servidor:
+4.  **Execute o servidor:**
     ```bash
-    python dashboard.py
+    python dashboard_python.py
     ```
-5.  O seu terminal deve confirmar a ligação ao broker `54.221.163.3` e que o servidor está a rodar em `http://0.0.0.0:5000/`.
 
-### Passo 3: Testar a Integração
+Se tudo correu bem, o seu terminal vai mostrar:
+`[MQTT] Conectado ao Broker '54.221.163.3'...`
+`Iniciando servidor Flask... a rodar em http://0.0.0.0:5000/`
 
-1.  Abra o seu navegador (Chrome, Firefox, etc.) e aceda a `http://127.0.0.1:5000` (ou `http://localhost:5000`).
-2.  O dashboard do placar deve aparecer e mostrar "Conectado" no topo.
+### Passo 4: Ver o Placar!
+
+1.  Abra o seu navegador (Chrome, Firefox, etc.).
+2.  Aceda ao endereço: `http://127.0.0.1:5000` (ou `http://localhost:5000`).
+3.  O seu placar deve aparecer.
+
+Agora, **coloque o Wokwi (ou o seu hardware real) e o seu navegador lado a lado** para ver a magia acontecer.
 
 ---
 
 ## 📸 Resultados da PoC (Prints da Integração)
 
-Abaixo estão os "prints de integração IoT com o site" que demonstram os "resultados da PoC" em funcionamento.
+Estes são os "prints de integração IoT com o site" que comprovam o funcionamento:
 
 ### 1. Sistema Conectado (Visão Geral)
 O Wokwi (esquerda) está conectado ao Broker. O Servidor Python (terminal) também está conectado. O Dashboard (navegador) mostra o placar inicial "0 vs 0".
 
-`[COLOQUE AQUI O SEU PRINT DO SISTEMA LIGADO]`
+<img width="1364" height="624" alt="image" src="https://github.com/user-attachments/assets/d3e5cbc8-c08f-4944-92b2-951f88c475ca" />
 
-### 2. PoC: Golo do Time A (Publicação HW -> Site)
-Simulámos um golo no sensor do Time A (esquerda). O placar no site (direita) atualizou **instantaneamente** para "1" com a animação "pop".
+### 2. PoC: Gol do Time A (Publicação HW -> Site)
+Simulamos um gol no sensor do Time A (clicando no sensor esquerdo no Wokwi). O placar no site (direita) atualizou **instantaneamente** para "1" com a animação "pop".
 
-`[COLOQUE AQUI O SEU PRINT DO PLACAR A MOSTRAR "1 vs 0"]`
+<img width="1913" height="903" alt="image" src="https://github.com/user-attachments/assets/1b00693d-4cf6-4ccf-b66e-b6fa5ca0ebad" />
+
 
 ### 3. PoC: Fim de Jogo (Comando Site -> HW)
-Clicámos em "Encerrar e Resetar" no site. O Modal de "Fim de Jogo" apareceu no navegador.
+Clicamos em "Encerrar e Resetar" no site. O Modal de "Fim de Jogo" (com o vencedor) apareceu no navegador.
 
-`[COLOQUE AQUI O SEU PRINT DO MODAL DE "FIM DE JOGO" NO SITE]`
+<img width="1915" height="900" alt="image" src="https://github.com/user-attachments/assets/0add8bfc-cb88-47e2-a9ef-1ff71d90f7e5" />
+
 
 ### 4. PoC: Confirmação no Hardware
-Após clicar em "Ok, Fechar" no Modal, o comando foi enviado ao ESP32, que mostrou o vencedor no LCD antes de zerar os contadores.
+Após clicar em "Ok, Fechar", o comando foi enviado ao ESP32 (Wokwi), que mostrou o vencedor no seu próprio LCD antes de zerar os contadores.
 
-`[COLOQUE AQUI UM PRINT DO LCD NO WOKWI A MOSTRAR "Time A Venceu!"]`
-````
+<img width="926" height="450" alt="image" src="https://github.com/user-attachments/assets/72cca058-59ef-46e2-a386-52a5aea5888f" />
+
+---
+
+## 🏁 Conclusão
+A Prova de Conceito do projeto "Passa a Bola" demonstrou com sucesso a integração entre hardware IoT, broker MQTT e dashboard web.
+O sistema foi capaz de detetar eventos físicos (gols) e atualizar o placar em tempo real no navegador, comprovando a comunicação bidirecional entre o ESP32 (Edge Device) e o servidor Flask (Dashboard).
+
+Além de consolidar os conceitos de Edge Computing, o projeto mostrou na prática como diferentes tecnologias — sensores, rede, protocolo MQTT e aplicações web — podem atuar juntas para criar uma solução interativa, escalável e totalmente replicável.
