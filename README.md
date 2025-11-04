@@ -80,7 +80,7 @@ Antes de começar, garanta que tem duas ferramentas instaladas no seu computador
 
 ### Passo 1: Clonar (Copiar) o Repositório
 
-Abra o seu Terminal (ou `cmd`) e use o `git clone` para copiar os ficheiros para o seu computador.
+Abra o seu Terminal (ou `cmd`) e use o `git clone` para copiar os arquivos para o seu computador.
 
 ```bash
 git clone [https://github.com/danielbritojunior/Sprint4Edge.git](https://github.com/danielbritojunior/Sprint4Edge.git)
@@ -111,7 +111,7 @@ O seu hardware está agora online e pronto para enviar gols.
 Isto é para quando você for montar o projeto fisicamente.
 
 1.  **Monte o Circuito:** Conecte os componentes físicos (LCD, 2x Sensores, Buzzer) nos pinos do ESP32 conforme definido no código (`placar_esp32.ino`).
-2.  **Abra o Código:** Abra o ficheiro `/hardware-dispositivo/placar_esp32.ino` na sua Arduino IDE.
+2.  **Abra o Código:** Abra o arquivo `/hardware-dispositivo/placar_esp32.ino` na sua Arduino IDE.
 3.  **Instale as Bibliotecas:** No Arduino IDE, vá a `Ferramentas > Gerir Bibliotecas...` e instale:
     * `PubSubClient`
     * `ArduinoJson`
