@@ -60,7 +60,7 @@ Para garantir a "organização por pastas", os arquivos estão divididos da segu
 │   └── placar_esp32.ino     # (Código-fonte do ESP32 que vai no Wokwi)
 │
 ├── /servidor-dashboard/
-│   ├── dashboard_python.py         # (Código do nosso site/servidor Python)
+│   ├── dashboard_python.py       # (Código do nosso site/servidor Python)
 │   └── requirements.txt     # (O "script de deploy" com as bibliotecas Python)
 │
 └── README.md                # (Esta documentação)
@@ -83,14 +83,18 @@ Antes de começar, garanta que tem duas ferramentas instaladas no seu computador
 Abra o seu Terminal (ou `cmd`) e use o `git clone` para copiar os ficheiros para o seu computador.
 
 ```bash
-git clone https://github.com/danielbritojunior/Sprint4Edge.git
+git clone [https://github.com/danielbritojunior/Sprint4Edge.git](https://github.com/danielbritojunior/Sprint4Edge.git)
 ```
 Depois, entre na pasta que acabou de ser criada:
 ```bash
 cd Sprint4Edge
 ```
 
-### Passo 2: Iniciar o Hardware (Wokwi)
+### Passo 2: Iniciar o Hardware
+
+Você tem duas opções para iniciar o hardware. Para a entrega online, use a Opção A. Para uma apresentação presencial, use a Opção B.
+
+#### Opção A: Simulado (Wokwi - Recomendado para Teste Rápido)
 
 1.  Abra o seu navegador de Internet.
 2.  Aceda ao nosso link público de simulação no Wokwi:
@@ -102,11 +106,26 @@ cd Sprint4Edge
 
 O seu hardware está agora online e pronto para enviar gols.
 
-*(O código-fonte `.ino` que está a rodar no Wokwi também está guardado na pasta `/hardware-dispositivo` deste repositório).*
+#### Opção B: Método Local (Presencial com Placa Real)
+
+Isto é para quando você for montar o projeto fisicamente.
+
+1.  **Monte o Circuito:** Conecte os componentes físicos (LCD, 2x Sensores, Buzzer) nos pinos do ESP32 conforme definido no código (`placar_esp32.ino`).
+2.  **Abra o Código:** Abra o ficheiro `/hardware-dispositivo/placar_esp32.ino` na sua Arduino IDE.
+3.  **Instale as Bibliotecas:** No Arduino IDE, vá a `Ferramentas > Gerir Bibliotecas...` e instale:
+    * `PubSubClient`
+    * `ArduinoJson`
+    * `LiquidCrystal_I2C`
+4.  **Altere o Wi-Fi:** Mude as linhas 10 e 11 do código para o Wi-Fi do local (ex: o hotspot do seu telemóvel):
+    ```cpp
+    const char* SSID = "Nome_do_WiFi_do_seu_Telemovel";
+    const char* PASSWORD = "Senha_do_seu_WiFi";
+    ```
+5.  **Carregue o Código:** Clique em "Carregar" (Upload) no Arduino IDE para enviar o código para a sua placa ESP32.
 
 ### Passo 3: Iniciar o Servidor do Dashboard (o seu PC)
 
-Agora, vamos ligar nosso site (o `dashboard_python.py`) para ele receber os dados do Wokwi.
+(Este passo é o mesmo, quer o hardware seja real ou simulado)
 
 1.  **Volte ao seu Terminal** (que já está dentro da pasta `Sprint4Edge`).
 2.  Navegue para a pasta do servidor:
@@ -132,7 +151,7 @@ Se tudo correu bem, o seu terminal vai mostrar:
 2.  Aceda ao endereço: `http://127.0.0.1:5000` (ou `http://localhost:5000`).
 3.  O seu placar deve aparecer.
 
-Agora, **coloque o Wokwi e o seu navegador lado a lado** para ver a magia acontecer.
+Agora, **coloque o Wokwi (ou o seu hardware real) e o seu navegador lado a lado** para ver a magia acontecer.
 
 ---
 
@@ -161,5 +180,3 @@ Clicamos em "Encerrar e Resetar" no site. O Modal de "Fim de Jogo" (com o venced
 Após clicar em "Ok, Fechar", o comando foi enviado ao ESP32 (Wokwi), que mostrou o vencedor no seu próprio LCD antes de zerar os contadores.
 
 <img width="926" height="450" alt="image" src="https://github.com/user-attachments/assets/72cca058-59ef-46e2-a386-52a5aea5888f" />
-
-
